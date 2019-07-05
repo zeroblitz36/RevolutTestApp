@@ -35,8 +35,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var myDataset = Array<String>(1000) {i -> "Text " + i}
-
         viewManager = LinearLayoutManager(this)
         //viewAdapter = MyAdapter(myDataset)
         viewAdapter = CurrencyViewAdapter(currentData)
