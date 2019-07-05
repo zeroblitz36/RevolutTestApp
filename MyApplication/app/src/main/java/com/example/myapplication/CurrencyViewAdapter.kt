@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONObject
 import kotlin.concurrent.fixedRateTimer
 
 class CurrencyViewAdapter(private val myDataset: CurrencyData) :
@@ -62,5 +63,10 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
         super.onAttachedToRecyclerView(recyclerView)
 
         this.recyclerView = recyclerView
+    }
+
+    fun updateDataset(j : JSONObject){
+        myDataset.update(j)
+        notifyDataSetChanged()
     }
 }

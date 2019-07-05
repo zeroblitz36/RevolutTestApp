@@ -20,7 +20,7 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: CurrencyViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
     private lateinit var callApiButton : Button
@@ -55,47 +55,10 @@ class MainActivity : AppCompatActivity() {
 
     fun callApiStuffAndPrint(){
         Log.d("ApiCall", "Start api call")
-        /*
-        val stringRequest = StringRequest(Request.Method.GET, url,
-            Response.Listener<String>{response ->
-                Log.d("ApiCall", "received = '" + response + "'")
-            },
-            Response.ErrorListener {
-                Log.d("ApiCall", "something didn't work!")
-            })
-
-        queue.add(stringRequest)
-        */
 
         val jsonRequest = JsonObjectRequest(Request.Method.GET, url,
             Response.Listener{response ->
-                //Log.d("ApiCall", "received = '" + response + "'")
-                //Log.d("ApiCall", "base = '" + response["base"] + "'")
-                //Log.d("ApiCall", "date = '" + response["date"] + "'")
-                //Log.d("ApiCall", "rates = '" + response["rates"] + "'")
-
-                currentData.base = response["base"].toString()
-                currentData.date = response["date"].toString()
-                //currentData.rates = response["rates"].
-                //var map = HashMap<String,Float>()
-                //val jsonRates = response["rates"]
-                var jsonObject = response.getJSONObject("rates")
-                /*
-                var map = HashMap<String,Float>()
-                jsonObject.keys()
-                for(i in jsonObject.keys()){
-                    val j = jsonObject.getDouble(i)
-                    //Log.d("ApiCall", "jsonArray["+i+"] = "+j)
-                    map[i] = j.toFloat()
-                }
-                currentData.setRates(map)
-                */
-                var list = ArrayList<CurrencyData.RateData>()
-                for(i in jsonObject.keys()){
-                    list.add(CurrencyData.RateData(i,jsonObject.getDouble(i).toFloat()))
-                }
-                currentData.setRates(list)
-                viewAdapter.notifyDataSetChanged()
+                viewAdapter.updateDataset(response)
             },
             Response.ErrorListener {
                 Log.d("ApiCall", "something didn't work!")
