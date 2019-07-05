@@ -2,9 +2,7 @@ package com.example.myapplication
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,7 +24,7 @@ class CurrencyView @JvmOverloads constructor(
             field = value
             textView1.text = field.name
             textView2.text = field.name + " country"
-            editTextView.setText(field.value.toString())
+            editTextView.setText(field.rateValue.toString())
         }
 
  //   constructor(context: Context) : this(context, null)
@@ -65,8 +63,8 @@ class CurrencyView @JvmOverloads constructor(
         textView2.text = text
     }
 
-    fun setCurrencyValue(value: Float){
-        editTextView.setText(value.toString())
+    fun setCurrencyValue(rateValue: Float){
+        editTextView.setText(rateValue.toString())
     }
     */
 }

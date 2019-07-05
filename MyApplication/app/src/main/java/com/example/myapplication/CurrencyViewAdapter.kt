@@ -44,7 +44,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
         /*
         holder.currencyView.setBigText("Big "+myDataset.rates[position].name)
         holder.currencyView.setSmallText("Small " + myDataset.rates[position].name)
-        holder.currencyView.setCurrencyValue(myDataset.rates[position].value)
+        holder.currencyView.setCurrencyValue(myDataset.rates[position].rateValue)
         */
         holder.currencyView.rateData = myDataset.rates[position]
     }
