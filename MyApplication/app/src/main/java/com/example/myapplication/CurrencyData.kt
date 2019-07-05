@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.util.Log
 import org.json.JSONObject
 
 class CurrencyData{
@@ -13,6 +14,9 @@ class CurrencyData{
     var rateMap = HashMap<String, RateData>()
     var masterRateData = RateData()
     var baseRateData = RateData()
+    var masterCoinQuantity : Float = 100.0f
+
+    lateinit var currencyViewAdapter : CurrencyViewAdapter
 
     fun updateRates(a: List<RateData>){
         if(rates.isEmpty()){
@@ -38,7 +42,7 @@ class CurrencyData{
         rates.add(0, rd)
     }
 
-    fun update(j : JSONObject){
+    fun update(j : JSONObject) : Boolean{
         base = j["base"].toString()
         date = j["date"].toString()
 
@@ -47,7 +51,7 @@ class CurrencyData{
         for(i in jsonObject.keys()){
             list.add(CurrencyData.RateData(i,jsonObject.getDouble(i).toFloat()))
         }
-
+        val flag = receivedFirstUpdate
         if(!receivedFirstUpdate){
             baseRateData = RateData(base, 1.0f)
             masterRateData = baseRateData
@@ -56,5 +60,15 @@ class CurrencyData{
             receivedFirstUpdate = true
         }
         updateRates(list)
+
+        return flag
+    }
+
+    fun notifyAllDataChangedExceptMaster(){
+        try{
+            currencyViewAdapter.notifyItemRangeChanged(1, rates.size-1)
+        }catch(e : IllegalStateException){
+            Log.e("CurrencyData", "Cannot update the adapter now")
+        }
     }
 }

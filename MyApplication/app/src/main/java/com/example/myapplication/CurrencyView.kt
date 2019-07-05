@@ -1,7 +1,10 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -18,16 +21,26 @@ class CurrencyView @JvmOverloads constructor(
     private var textView1 : TextView
     private var textView2 : TextView
     private var editTextView : EditText
+    private var dataSet : CurrencyData? = null
     var rateData = CurrencyData.RateData()
         get() = field
         set(value){
             field = value
             textView1.text = field.name
             textView2.text = field.name + " country"
-            editTextView.setText(field.rateValue.toString())
+            var x = field.rateValue
+            val localDataSet = dataSet
+            if(localDataSet != null){
+                x = localDataSet.masterCoinQuantity * rateData.rateValue / localDataSet.masterRateData.rateValue
+            }else{
+                x = -999.0f
+            }
+            editTextView.setText(x.toString())
         }
 
- //   constructor(context: Context) : this(context, null)
+    constructor(context: Context, dataSet: CurrencyData) : this(context, null){
+        this.dataSet = dataSet
+    }
  //   constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
     //constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -44,6 +57,38 @@ class CurrencyView @JvmOverloads constructor(
         textView1 = this.findViewById(R.id.currency_short_name_text_view) as TextView
         textView2 = this.findViewById(R.id.curreny_long_name_text_view) as TextView
         editTextView = this.findViewById(R.id.currency_value_edit_text) as EditText
+        editTextView.addTextChangedListener( object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            var lastText : String = ""
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                var currentText : String = ""
+                if (p0 != null){
+                    currentText = p0.toString()
+                }
+
+                val localDataSet = dataSet
+                if(localDataSet == null){
+                    return
+                }
+                if (rateData != localDataSet.masterRateData) {
+                    return
+                }
+                Log.d("Test", "lastText = " + lastText)
+                Log.d("Test", "currentText = " + currentText)
+                if(lastText.compareTo(currentText) == 0){
+                    Log.d("Test", "String are identical, don't do anything")
+                    return
+                }
+                lastText = currentText
+                val floatValue = p0.toString().toFloat()
+                localDataSet.masterCoinQuantity = floatValue
+                localDataSet.notifyAllDataChangedExceptMaster()
+                Log.d("Test", "floatValue = " +floatValue)
+                //localDataSet.baseRateData.rateValue
+            }
+        })
     }
     /*
     override fun onFinishInflate() {

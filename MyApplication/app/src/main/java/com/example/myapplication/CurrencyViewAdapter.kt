@@ -13,6 +13,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
 
     init {
         setHasStableIds(true)
+        myDataset.currencyViewAdapter = this
     }
 
     class CurrencyViewHolder(val currencyView: CurrencyView) : RecyclerView.ViewHolder(currencyView)
@@ -20,7 +21,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         //val currencyView = CurrencyView.generateNewCurrenyViewObject(parent)
         //return CurrencyViewHolder(currencyView)
-        val currencyView = CurrencyView(parent.context)
+        val currencyView = CurrencyView(parent.context, myDataset)
         var lp = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         currencyView.layoutParams = lp
 
@@ -66,7 +67,10 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
     }
 
     fun updateDataset(j : JSONObject){
-        myDataset.update(j)
-        notifyDataSetChanged()
+        if (myDataset.update(j)) {
+            notifyItemRangeChanged(1, myDataset.rates.size-1)
+        }else{
+            notifyItemRangeInserted(0, myDataset.rates.size)
+        }
     }
 }
