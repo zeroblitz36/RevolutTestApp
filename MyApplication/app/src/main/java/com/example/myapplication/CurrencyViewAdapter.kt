@@ -52,7 +52,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
         for (c in name){
             itemId = c.toInt() + itemId*256
         }
-        Log.d("ItemId", "pos = " + position + " id = " + itemId)
+        //Log.d("ItemId", "pos = " + position + " id = " + itemId)
         return itemId
     }
 
