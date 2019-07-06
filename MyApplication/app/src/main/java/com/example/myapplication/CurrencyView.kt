@@ -42,7 +42,7 @@ class CurrencyView @JvmOverloads constructor(
             if(x <= 0.0f){
                 editTextView.setText("")
             } else{
-                editTextView.setText(x.toString())
+                editTextView.setText("%.2f".format(x))
             }
 
             if (field.name.isNotEmpty() && previousValue.name != field.name){
