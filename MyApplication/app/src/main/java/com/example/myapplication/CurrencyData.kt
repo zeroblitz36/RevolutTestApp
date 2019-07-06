@@ -8,7 +8,9 @@ class CurrencyData{
     var date : String = ""
     var receivedFirstUpdate : Boolean = false
 
-    class RateData(var name: String = "NAN", var rateValue: Float = -1.0f) {}
+    class RateData(var name: String = "NAN", var rateValue: Float = -1.0f) {
+        var currentlyAssignedViewHolder: CurrencyViewAdapter.CurrencyViewHolder? = null
+    }
 
     var rates = ArrayList<RateData>()
     var rateMap = HashMap<String, RateData>()
@@ -32,6 +34,15 @@ class CurrencyData{
             var rateData = rateMap[r.name]
             if(rateData != null){
                 rateData.rateValue = r.rateValue
+            }
+        }
+
+        for (i in 1..rates.size-1){
+            val x = rates[i]
+            val otherCurrencyView = x.currentlyAssignedViewHolder?.currencyView
+            if(otherCurrencyView != null){
+                //trigger update
+                otherCurrencyView.rateData = otherCurrencyView.rateData
             }
         }
     }
@@ -68,7 +79,9 @@ class CurrencyData{
 
     fun notifyAllDataChangedExceptMaster(){
         try{
+            Log.e("Test", "notifyItemRangeChanged")
             currencyViewAdapter.notifyItemRangeChanged(1, rates.size-1)
+            //currencyViewAdapter.notifyItemRangeChanged(1, 4)
         }catch(e : IllegalStateException){
             Log.e("CurrencyData", "Cannot update the adapter now")
         }

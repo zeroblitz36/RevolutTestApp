@@ -5,6 +5,7 @@ import android.graphics.*
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -94,6 +95,7 @@ class CurrencyView @JvmOverloads constructor(
 
     init {
         View.inflate(getContext(), R.layout.currency_display_view, this)
+        Log.d("Test", "Inflating new CurrencyView")
         countryImageView = this.findViewById(R.id.country_image_view) as ImageView
         currencyShortNameTextView = this.findViewById(R.id.currency_short_name_text_view) as TextView
         currentLongNameTextView = this.findViewById(R.id.curreny_long_name_text_view) as TextView
@@ -128,7 +130,16 @@ class CurrencyView @JvmOverloads constructor(
                 }
 
                 localDataSet.masterCoinQuantity = floatValue
-                localDataSet.notifyAllDataChangedExceptMaster()
+                //localDataSet.notifyAllDataChangedExceptMaster()
+
+                for (i in 1..localDataSet.rates.size-1){
+                    val x = localDataSet.rates[i]
+                    val otherCurrencyView = x.currentlyAssignedViewHolder?.currencyView
+                    if(otherCurrencyView != null){
+                        //trigger update
+                        otherCurrencyView.rateData = otherCurrencyView.rateData
+                    }
+                }
             }
         })
     }
