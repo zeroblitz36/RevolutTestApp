@@ -1,7 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.*
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -10,9 +10,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import java.util.*
 import kotlin.collections.HashMap
+
 
 class CurrencyView @JvmOverloads constructor(
     context: Context,
@@ -20,7 +20,7 @@ class CurrencyView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : LinearLayout(context, attrs, defStyle) {
 
-    private var imageView1 : ImageView
+    private var countryImageView : ImageView
     private var currencyShortNameTextView : TextView
     private var currentLongNameTextView : TextView
     var editTextView : EditText
@@ -45,21 +45,47 @@ class CurrencyView @JvmOverloads constructor(
             }
 
             if (field.name.isNotEmpty() && previousValue.name != field.name){
-                var drawable : Drawable? = currencyFlagMap[field.name]
-                if(drawable == null){
+                var countryBitmap : Bitmap? = currencyFlagMap[field.name]
+                if(countryBitmap == null){
                     val drawableName = "flag_"+field.name.toLowerCase()
                     val drawableId = context.resources.getIdentifier(drawableName, "drawable", context.packageName)
-                    drawable = ContextCompat.getDrawable(context, drawableId)
-                    if(drawable != null){
-                        currencyFlagMap.set(field.name, drawable)
+
+                    val tempBitmap = BitmapFactory.decodeResource(context.resources, drawableId)
+                    countryBitmap = getCircleCountryFlagBitmap(tempBitmap)
+                    if(countryBitmap != null){
+                        currencyFlagMap.set(field.name, countryBitmap)
                     }
                 }
-                imageView1.setImageDrawable(drawable)
+                countryImageView.setImageBitmap(countryBitmap)
             }
         }
 
     companion object{
-        val currencyFlagMap = HashMap<String, Drawable>()
+        val currencyFlagMap = HashMap<String, Bitmap>()
+
+        /*
+        Function will only work if the width of the sourceBitmap is bigger than the height
+         */
+        private fun getCircleCountryFlagBitmap(sourceBitmap: Bitmap): Bitmap {
+            val w = sourceBitmap.width
+            val h = sourceBitmap.height
+
+            val outputBitmap = Bitmap.createBitmap(h, h, Bitmap.Config.ARGB_8888)
+
+            val canvas = Canvas(outputBitmap)
+            val paintColor = Paint()
+            paintColor.setFlags(Paint.ANTI_ALIAS_FLAG)
+
+            val rectF = RectF(Rect(0, 0, h, h))
+
+            canvas.drawRoundRect(rectF, h / 2.0f, h / 2.0f, paintColor)
+
+            val paintImage = Paint()
+            paintImage.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP))
+            canvas.drawBitmap(sourceBitmap, (h - w)/2.0f, 0.0f, paintImage)
+
+            return outputBitmap
+        }
     }
 
     constructor(context: Context, dataSet: CurrencyData) : this(context, null){
@@ -68,7 +94,7 @@ class CurrencyView @JvmOverloads constructor(
 
     init {
         View.inflate(getContext(), R.layout.currency_display_view, this)
-        imageView1 = this.findViewById(R.id.currency_image_view) as ImageView
+        countryImageView = this.findViewById(R.id.country_image_view) as ImageView
         currencyShortNameTextView = this.findViewById(R.id.currency_short_name_text_view) as TextView
         currentLongNameTextView = this.findViewById(R.id.curreny_long_name_text_view) as TextView
         editTextView = this.findViewById(R.id.currency_value_edit_text) as EditText
