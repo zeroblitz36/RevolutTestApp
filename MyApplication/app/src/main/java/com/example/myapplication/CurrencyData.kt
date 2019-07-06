@@ -40,6 +40,8 @@ class CurrencyData{
         val rd = rates[index]
         rates.removeAt(index)
         rates.add(0, rd)
+
+        masterRateData = rates[0]
     }
 
     fun update(j : JSONObject) : Boolean{

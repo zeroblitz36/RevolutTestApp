@@ -82,7 +82,13 @@ class CurrencyView @JvmOverloads constructor(
                     return
                 }
                 lastText = currentText
-                val floatValue = p0.toString().toFloat()
+
+                //val floatValue = p0.toString().toFloat()
+                var floatValue = 0.0f
+                if (p0 != null && p0.isNotEmpty()){
+                    floatValue = p0.toString().toFloat()
+                }
+
                 localDataSet.masterCoinQuantity = floatValue
                 localDataSet.notifyAllDataChangedExceptMaster()
                 Log.d("Test", "floatValue = " +floatValue)
