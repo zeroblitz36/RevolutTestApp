@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -9,7 +10,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import java.util.*
+import kotlin.collections.HashMap
 
 class CurrencyView @JvmOverloads constructor(
     context: Context,
@@ -25,6 +28,7 @@ class CurrencyView @JvmOverloads constructor(
     var rateData = CurrencyData.RateData()
         get() = field
         set(value){
+            val previousValue = field
             field = value
             currencyShortNameTextView.text = field.name
             val currenyInstance = Currency.getInstance(field.name)
@@ -39,7 +43,24 @@ class CurrencyView @JvmOverloads constructor(
             } else{
                 editTextView.setText(x.toString())
             }
+
+            if (field.name.isNotEmpty() && previousValue.name != field.name){
+                var drawable : Drawable? = currencyFlagMap[field.name]
+                if(drawable == null){
+                    val drawableName = "flag_"+field.name.toLowerCase()
+                    val drawableId = context.resources.getIdentifier(drawableName, "drawable", context.packageName)
+                    drawable = ContextCompat.getDrawable(context, drawableId)
+                    if(drawable != null){
+                        currencyFlagMap.set(field.name, drawable)
+                    }
+                }
+                imageView1.setImageDrawable(drawable)
+            }
         }
+
+    companion object{
+        val currencyFlagMap = HashMap<String, Drawable>()
+    }
 
     constructor(context: Context, dataSet: CurrencyData) : this(context, null){
         this.dataSet = dataSet
