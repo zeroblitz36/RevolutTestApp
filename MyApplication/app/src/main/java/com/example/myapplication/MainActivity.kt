@@ -24,6 +24,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
     private lateinit var callApiButton : Button
+
+    /*
+    The "Revolut Android Test" document only mentions that this URL must be used
+    It does not mention the existence of API calls such as
+    "https://revolut.duckdns.org/latest?base=USD"
+    */
     private val url = "https://revolut.duckdns.org/latest?base=EUR"
     private val currentData = CurrencyData()
 
