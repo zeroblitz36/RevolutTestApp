@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         viewManager = LinearLayoutManager(this)
-        //viewAdapter = MyAdapter(myDataset)
         viewAdapter = CurrencyViewAdapter(currentData)
 
         recyclerView = findViewById<RecyclerView>(R.id.my_recycler_view).apply {

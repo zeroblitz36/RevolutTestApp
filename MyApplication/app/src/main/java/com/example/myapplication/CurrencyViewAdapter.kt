@@ -1,10 +1,8 @@
 package com.example.myapplication
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
-import kotlin.concurrent.fixedRateTimer
 
 class CurrencyViewAdapter(private val myDataset: CurrencyData) :
         RecyclerView.Adapter<CurrencyViewAdapter.CurrencyViewHolder>(){
@@ -19,22 +17,11 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
     class CurrencyViewHolder(val currencyView: CurrencyView) : RecyclerView.ViewHolder(currencyView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
-        //val currencyView = CurrencyView.generateNewCurrenyViewObject(parent)
-        //return CurrencyViewHolder(currencyView)
         val currencyView = CurrencyView(parent.context, myDataset)
         var lp = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         currencyView.layoutParams = lp
 
         val holder = CurrencyViewHolder(currencyView)
-
-        /*
-        holder.currencyView.setOnClickListener{
-            val pos = holder.adapterPosition
-            myDataset.moveRateDataToTop(pos)
-            notifyItemMoved(pos, 0)
-            recyclerView.scrollToPosition(0)
-        }
-        */
 
         holder.currencyView.editTextView.setOnFocusChangeListener {
             view, hasFocus ->
@@ -54,11 +41,6 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
-        /*
-        holder.currencyView.setBigText("Big "+myDataset.rates[position].name)
-        holder.currencyView.setSmallText("Small " + myDataset.rates[position].name)
-        holder.currencyView.setCurrencyValue(myDataset.rates[position].rateValue)
-        */
         holder.currencyView.rateData = myDataset.rates[position]
     }
 
