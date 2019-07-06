@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -58,7 +59,12 @@ class MainActivity : AppCompatActivity() {
                 },1000)
             },
             Response.ErrorListener {
-                Log.d("ApiCall", "something didn't work!")
+                //Log.d("ApiCall", "something didn't work!")
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Network error")
+                builder.setMessage("Something happened when attempting to obtain data from the server:\n" + it.message)
+                builder.setPositiveButton("Ok", null)
+                builder.show()
             })
         jsonRequest.tag = this
         queue.add(jsonRequest)
