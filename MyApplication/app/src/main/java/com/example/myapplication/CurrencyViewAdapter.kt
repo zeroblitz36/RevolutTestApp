@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
@@ -51,6 +52,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
         for (c in name){
             itemId = c.toInt() + itemId*256
         }
+        Log.d("ItemId", "pos = " + position + " id = " + itemId)
         return itemId
     }
 
