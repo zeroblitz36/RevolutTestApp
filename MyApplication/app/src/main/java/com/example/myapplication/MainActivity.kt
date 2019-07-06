@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewAdapter: CurrencyViewAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager : RecyclerView.LayoutManager
-    private lateinit var callApiButton : Button
-
+    private lateinit var mHandler : Handler
     /*
     The "Revolut Android Test" document only mentions that this URL must be used
     It does not mention the existence of API calls such as
@@ -51,29 +51,51 @@ class MainActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
-        callApiButton = findViewById<Button>(R.id.call_api_button)
-        callApiButton.setOnClickListener{
-            callApiStuffAndPrint()
-        }
+        mHandler = Handler()
     }
 
-    fun callApiStuffAndPrint(){
+    private fun callApiStuffAndPrint(){
         Log.d("ApiCall", "Start api call")
 
         val jsonRequest = JsonObjectRequest(Request.Method.GET, url,
             Response.Listener{response ->
                 viewAdapter.updateDataset(response)
+
+                mHandler.postDelayed({
+                    callApiStuffAndPrint()
+                },1000)
             },
             Response.ErrorListener {
                 Log.d("ApiCall", "something didn't work!")
             })
-
+        jsonRequest.tag = this
         queue.add(jsonRequest)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        queue.stop()
+        queue.cancelAll(this)
+        queue.start()
+        callApiStuffAndPrint()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        queue.stop()
+        queue.cancelAll(this)
     }
 
     override fun onStop() {
         super.onStop()
-        queue.cancelAll(Any())
+        queue.stop()
+        queue.cancelAll(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        queue.stop()
+        queue.cancelAll(this)
     }
 }
 
