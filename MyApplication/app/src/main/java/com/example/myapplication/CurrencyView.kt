@@ -95,7 +95,7 @@ class CurrencyView @JvmOverloads constructor(
 
     init {
         View.inflate(getContext(), R.layout.currency_display_view, this)
-        Log.d("Test", "Inflating new CurrencyView")
+        //Log.d("Test", "Inflating new CurrencyView")
         countryImageView = this.findViewById(R.id.country_image_view) as ImageView
         currencyShortNameTextView = this.findViewById(R.id.currency_short_name_text_view) as TextView
         currentLongNameTextView = this.findViewById(R.id.curreny_long_name_text_view) as TextView

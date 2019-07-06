@@ -19,7 +19,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
     class CurrencyViewHolder(val currencyView: CurrencyView) : RecyclerView.ViewHolder(currencyView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
-        Log.d("Test", "onCreateViewHolder")
+        //Log.d("Test", "onCreateViewHolder")
         val currencyView = CurrencyView(parent.context, myDataset)
         var lp = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         currencyView.layoutParams = lp
@@ -60,7 +60,7 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
 
     override fun getItemId(position: Int): Long {
         val itemId = myDataset.rates[position].name.hashCode().toLong()
-        Log.d("Test", "pos = "+position+" name = " + myDataset.rates[position].name + " id = " + itemId)
+        //Log.d("Test", "pos = "+position+" name = " + myDataset.rates[position].name + " id = " + itemId)
         return itemId
     }
 

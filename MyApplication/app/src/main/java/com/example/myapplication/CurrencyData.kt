@@ -77,13 +77,15 @@ class CurrencyData{
         return flag
     }
 
+    /*
     fun notifyAllDataChangedExceptMaster(){
         try{
-            Log.e("Test", "notifyItemRangeChanged")
+            //Log.d("Test", "notifyItemRangeChanged")
             currencyViewAdapter.notifyItemRangeChanged(1, rates.size-1)
             //currencyViewAdapter.notifyItemRangeChanged(1, 4)
         }catch(e : IllegalStateException){
             Log.e("CurrencyData", "Cannot update the adapter now")
         }
     }
+    */
 }
