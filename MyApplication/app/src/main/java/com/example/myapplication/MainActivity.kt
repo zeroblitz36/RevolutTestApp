@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = viewManager
             adapter = viewAdapter
         }
-
+        recyclerView.setScrollingTouchSlop(RecyclerView.TOUCH_SLOP_PAGING)
         mHandler = Handler()
     }
 
