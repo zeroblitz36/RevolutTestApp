@@ -20,7 +20,7 @@ class CurrencyView @JvmOverloads constructor(
     private var imageView1 : ImageView
     private var textView1 : TextView
     private var textView2 : TextView
-    private var editTextView : EditText
+    public var editTextView : EditText
     private var dataSet : CurrencyData? = null
     var rateData = CurrencyData.RateData()
         get() = field

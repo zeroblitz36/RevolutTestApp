@@ -27,11 +27,23 @@ class CurrencyViewAdapter(private val myDataset: CurrencyData) :
 
         val holder = CurrencyViewHolder(currencyView)
 
+        /*
         holder.currencyView.setOnClickListener{
             val pos = holder.adapterPosition
             myDataset.moveRateDataToTop(pos)
             notifyItemMoved(pos, 0)
             recyclerView.scrollToPosition(0)
+        }
+        */
+
+        holder.currencyView.editTextView.setOnFocusChangeListener {
+            view, hasFocus ->
+            if(hasFocus){
+                val pos = holder.adapterPosition
+                myDataset.moveRateDataToTop(pos)
+                notifyItemMoved(pos, 0)
+                recyclerView.scrollToPosition(0)
+            }
         }
 
         return holder
