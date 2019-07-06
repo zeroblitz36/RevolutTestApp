@@ -30,5 +30,6 @@
             android:ems="10"
             android:id="@+id/currency_value_edit_text" android:singleLine="true" android:hint="0"
             android:textColor="@android:color/black" android:layout_weight="0"
-            android:gravity="right" android:minEms="1" android:layout_marginRight="20dp"/>
+            android:gravity="right" android:minEms="1" android:layout_marginRight="20dp"
+            android:imeOptions="actionDone"/>
 </LinearLayout>
