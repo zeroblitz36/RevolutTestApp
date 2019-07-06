@@ -18,9 +18,9 @@ class CurrencyData{
 
     lateinit var currencyViewAdapter : CurrencyViewAdapter
 
-    fun updateRates(a: List<RateData>){
+    fun updateRates(a: ArrayList<RateData>){
         if(rates.isEmpty()){
-            rates = ArrayList(a)
+            rates = a
             rateMap.clear()
             for(r in rates){
                 rateMap[r.name] = r

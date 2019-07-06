@@ -4,12 +4,12 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import java.util.*
 
 class CurrencyView @JvmOverloads constructor(
     context: Context,
@@ -18,24 +18,27 @@ class CurrencyView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyle) {
 
     private var imageView1 : ImageView
-    private var textView1 : TextView
-    private var textView2 : TextView
+    private var currencyShortNameTextView : TextView
+    private var currentLongNameTextView : TextView
     var editTextView : EditText
     private var dataSet : CurrencyData? = null
     var rateData = CurrencyData.RateData()
         get() = field
         set(value){
             field = value
-            textView1.text = field.name
-            textView2.text = field.name + " country"
-            var x = field.rateValue
+            currencyShortNameTextView.text = field.name
+            val currenyInstance = Currency.getInstance(field.name)
+            currentLongNameTextView.text = currenyInstance.displayName
+            var x = 0.0f
             val localDataSet = dataSet
             if(localDataSet != null){
                 x = localDataSet.masterCoinQuantity * rateData.rateValue / localDataSet.masterRateData.rateValue
-            }else{
-                x = -999.0f
             }
-            editTextView.setText(x.toString())
+            if(x <= 0.0f){
+                editTextView.setText("")
+            } else{
+                editTextView.setText(x.toString())
+            }
         }
 
     constructor(context: Context, dataSet: CurrencyData) : this(context, null){
@@ -45,8 +48,8 @@ class CurrencyView @JvmOverloads constructor(
     init {
         View.inflate(getContext(), R.layout.currency_display_view, this)
         imageView1 = this.findViewById(R.id.currency_image_view) as ImageView
-        textView1 = this.findViewById(R.id.currency_short_name_text_view) as TextView
-        textView2 = this.findViewById(R.id.curreny_long_name_text_view) as TextView
+        currencyShortNameTextView = this.findViewById(R.id.currency_short_name_text_view) as TextView
+        currentLongNameTextView = this.findViewById(R.id.curreny_long_name_text_view) as TextView
         editTextView = this.findViewById(R.id.currency_value_edit_text) as EditText
         editTextView.addTextChangedListener( object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}
@@ -66,10 +69,7 @@ class CurrencyView @JvmOverloads constructor(
                 if (rateData != localDataSet.masterRateData) {
                     return
                 }
-                Log.d("Test", "lastText = " + lastText)
-                Log.d("Test", "currentText = " + currentText)
                 if(lastText.compareTo(currentText) == 0){
-                    Log.d("Test", "String are identical, don't do anything")
                     return
                 }
                 lastText = currentText
@@ -82,7 +82,6 @@ class CurrencyView @JvmOverloads constructor(
 
                 localDataSet.masterCoinQuantity = floatValue
                 localDataSet.notifyAllDataChangedExceptMaster()
-                Log.d("Test", "floatValue = " +floatValue)
             }
         })
     }
