@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.groscaneanu.revolut_test
 
 import org.junit.Test
 

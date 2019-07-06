@@ -1,6 +1,5 @@
-package com.example.myapplication
+package com.groscaneanu.revolut_test
 
-import android.util.Log
 import org.json.JSONObject
 
 class CurrencyData{

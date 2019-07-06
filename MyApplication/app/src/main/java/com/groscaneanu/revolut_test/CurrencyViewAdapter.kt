@@ -1,6 +1,5 @@
-package com.example.myapplication
+package com.groscaneanu.revolut_test
 
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
