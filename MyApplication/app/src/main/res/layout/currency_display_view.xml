@@ -5,13 +5,13 @@
 
     <ImageView
             android:layout_width="40dp"
-            android:layout_height="40dp" app:srcCompat="@android:drawable/star_big_on"
+            android:layout_height="40dp" app:srcCompat="@drawable/flag_eur"
             android:id="@+id/country_image_view" android:layout_weight="0"
             android:layout_margin="10dp" android:scaleType="fitCenter"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:layout_weight="0" android:layout_marginRight="10dp">
+            android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginRight="10dp">
         <TextView
                 android:text="EUR"
                 android:layout_width="wrap_content"
@@ -23,11 +23,11 @@
                 android:layout_height="wrap_content" android:id="@+id/curreny_long_name_text_view"/>
     </LinearLayout>
     <EditText
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
             android:ems="10"
             android:id="@+id/currency_value_edit_text" android:singleLine="true" android:hint="0"
-            android:textColor="@android:color/black" android:text="1234" android:layout_weight="1"
-            android:gravity="right"/>
+            android:textColor="@android:color/black" android:layout_weight="0"
+            android:gravity="right" android:minEms="1" android:layout_marginRight="20dp"/>
 </LinearLayout>
