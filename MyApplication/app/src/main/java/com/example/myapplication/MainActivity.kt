@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     The "Revolut Android Test" document only mentions that this URL must be used
     It does not mention the existence of API calls such as
     "https://revolut.duckdns.org/latest?base=USD"
+    All calculations are done relatively to the Euro currency
     */
     private val url = "https://revolut.duckdns.org/latest?base=EUR"
     private val currentData = CurrencyData()
